@@ -207,16 +207,20 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MunicipalitiesController.cs" />
     <Compile Include="Controllers\PropertyTypesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Department.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Municipality.cs" />
     <Compile Include="Models\PropertyType.cs" />
     <Compile Include="Models\WebTaxesContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -299,6 +303,16 @@
     <Content Include="Views\PropertyTypes\Details.cshtml" />
     <Content Include="Views\PropertyTypes\Edit.cshtml" />
     <Content Include="Views\PropertyTypes\Index.cshtml" />
+    <Content Include="Views\Departments\Create.cshtml" />
+    <Content Include="Views\Departments\Delete.cshtml" />
+    <Content Include="Views\Departments\Details.cshtml" />
+    <Content Include="Views\Departments\Edit.cshtml" />
+    <Content Include="Views\Departments\Index.cshtml" />
+    <Content Include="Views\Municipalities\Create.cshtml" />
+    <Content Include="Views\Municipalities\Delete.cshtml" />
+    <Content Include="Views\Municipalities\Details.cshtml" />
+    <Content Include="Views\Municipalities\Edit.cshtml" />
+    <Content Include="Views\Municipalities\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

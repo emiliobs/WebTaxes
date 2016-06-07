@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
 
@@ -19,6 +20,16 @@ namespace WebTaxes.Models
         {
         }
 
+        //Dabilitar borrado en cascada:
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
+
         public DbSet<PropertyType> PropertyTypes { get; set; }
+
+        public System.Data.Entity.DbSet<WebTaxes.Models.Department> Departments { get; set; }
+
+        public System.Data.Entity.DbSet<WebTaxes.Models.Municipality> Municipalities { get; set; }
     }
 }

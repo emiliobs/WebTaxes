@@ -17,7 +17,7 @@ namespace WebTaxes.Controllers
         // GET: PropertyTypes
         public ActionResult Index()
         {
-            return View(db.PropertyTypes.ToList());
+            return View(db.PropertyTypes.OrderBy(pt => pt.Description).ToList());
         }
 
         // GET: PropertyTypes/Details/5
@@ -51,11 +51,35 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.PropertyTypes.Add(propertyType);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(propertyType);
+                try
+                {
+                    db.SaveChanges();
+                   
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException!= null && ex.InnerException.InnerException!=null 
+                        && ex.InnerException.InnerException.Message.Contains("Index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+                        
+                       
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty,ex.Message);
+                    }
+
+                    return View(propertyType);
+
+                }              
+
+            }
+            return RedirectToAction("Index");
+
+
         }
 
         // GET: PropertyTypes/Edit/5
@@ -65,7 +89,9 @@ namespace WebTaxes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             PropertyType propertyType = db.PropertyTypes.Find(id);
+
             if (propertyType == null)
             {
                 return HttpNotFound();
@@ -83,10 +109,30 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(propertyType).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null 
+                        && ex.InnerException.InnerException.Message.Contains("Index"))
+                    {
+                        ModelState.AddModelError(string.Empty,"Ther are a record with the same description.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(propertyType);
+                }
+
+                
             }
-            return View(propertyType);
+            return RedirectToAction("Index");
         }
 
         // GET: PropertyTypes/Delete/5
@@ -96,7 +142,9 @@ namespace WebTaxes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             PropertyType propertyType = db.PropertyTypes.Find(id);
+
             if (propertyType == null)
             {
                 return HttpNotFound();
@@ -110,11 +158,26 @@ namespace WebTaxes.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             PropertyType propertyType = db.PropertyTypes.Find(id);
+
             db.PropertyTypes.Remove(propertyType);
-            db.SaveChanges();
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                ex.ToString();
+
+                return View(propertyType);
+            }
+
             return RedirectToAction("Index");
         }
 
+
+        //Cierra la coexión con la bd:
         protected override void Dispose(bool disposing)
         {
             if (disposing)

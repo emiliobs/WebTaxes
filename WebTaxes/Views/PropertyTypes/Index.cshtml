@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<WebTaxes.Models.PropertyType>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Property Types";
 }
 
-<h2>Index</h2>
+<h2>Property Types</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",new { }, new { @class="btn btn-primary"})
 </p>
 <table class="table">
     <tr>
@@ -29,9 +29,9 @@
             @Html.DisplayFor(modelItem => item.Notes)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PropertyTypeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PropertyTypeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PropertyTypeId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.PropertyTypeId }, new { @class = "btn btn-info" }) 
+            @Html.ActionLink("Details", "Details", new { id=item.PropertyTypeId }, new { @class = "btn btn-warning" }) 
+            @Html.ActionLink("Delete", "Delete", new { id=item.PropertyTypeId }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }
