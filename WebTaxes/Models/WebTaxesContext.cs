@@ -31,5 +31,7 @@ namespace WebTaxes.Models
         public System.Data.Entity.DbSet<WebTaxes.Models.Department> Departments { get; set; }
 
         public System.Data.Entity.DbSet<WebTaxes.Models.Municipality> Municipalities { get; set; }
+
+        public System.Data.Entity.DbSet<WebTaxes.Models.DocumentType> DocumentTypes { get; set; }
     }
 }
