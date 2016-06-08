@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebTaxes.Models
 {
@@ -23,5 +20,6 @@ namespace WebTaxes.Models
         //relacion varios:
         //con virtual no se va a la bd:
         public virtual Department Department { get; set; }
+        public virtual ICollection<TaxPaer> TaxPaer { get; set; }
     }
 }

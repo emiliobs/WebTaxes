@@ -28,10 +28,12 @@ namespace WebTaxes.Models
 
         public DbSet<PropertyType> PropertyTypes { get; set; }
 
-        public System.Data.Entity.DbSet<WebTaxes.Models.Department> Departments { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
-        public System.Data.Entity.DbSet<WebTaxes.Models.Municipality> Municipalities { get; set; }
+        public DbSet<Municipality> Municipalities { get; set; }
 
-        public System.Data.Entity.DbSet<WebTaxes.Models.DocumentType> DocumentTypes { get; set; }
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+
+        public System.Data.Entity.DbSet<WebTaxes.Models.TaxPaer> TaxPaers { get; set; }
     }
 }

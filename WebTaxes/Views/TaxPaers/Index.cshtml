@@ -1,0 +1,81 @@
+﻿@model IEnumerable<WebTaxes.Models.TaxPaer>
+
+@{
+    ViewBag.Title = "Tax Paers";
+}
+
+<h2>Tax Paers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.Name)
+        </th>        
+        <th>
+            @Html.DisplayNameFor(model => model.Municipality.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirsName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentType.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Document)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.Name)
+        </td>        
+        <td>
+            @Html.DisplayFor(modelItem => item.Municipality.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirsName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DocumentType.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Document)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TaxPaerId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TaxPaerId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TaxPaerId })
+        </td>
+    </tr>
+}
+
+</table>
