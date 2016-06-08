@@ -110,8 +110,28 @@ namespace WebTaxes.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Department department = db.Departments.Find(id);
+
             db.Departments.Remove(department);
-            db.SaveChanges();
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                if (ex.InnerException != null && ex.InnerException.InnerException != null
+                    && ex.InnerException.InnerException.Message.Contains("REFERENCE"))
+                {
+                    ModelState.AddModelError(string.Empty, "The record can't be delete because has related record.");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty,ex.Message);
+                }
+                return View(department);
+            }
+
             return RedirectToAction("Index");
         }
 

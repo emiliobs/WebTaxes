@@ -121,7 +121,27 @@ namespace WebTaxes.Controllers
         {
             Municipality municipality = db.Municipalities.Find(id);
             db.Municipalities.Remove(municipality);
-            db.SaveChanges();
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+
+                if (ex.InnerException != null && ex.InnerException.InnerException != null
+                    && ex.InnerException.InnerException.Message.Contains("REFERENCE"))
+                {
+                    ModelState.AddModelError(string.Empty, "The record can't be delete because has related record.");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty,ex.Message);
+                }
+                return View(municipality);
+            }
+
             return RedirectToAction("Index");
         }
 
