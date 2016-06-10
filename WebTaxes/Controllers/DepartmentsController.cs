@@ -51,10 +51,31 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Departments.Add(department);
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("Index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(department);
+                }
+
                 return RedirectToAction("Index");
             }
-
             return View(department);
         }
 
@@ -83,7 +104,30 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(department).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("Index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(department);
+
+
+                }
                 return RedirectToAction("Index");
             }
             return View(department);

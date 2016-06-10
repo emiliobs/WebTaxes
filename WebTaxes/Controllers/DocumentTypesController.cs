@@ -51,11 +51,32 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.DocumentTypes.Add(documentType);
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("Index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(documentType);
+                }
                 return RedirectToAction("Index");
             }
-
             return View(documentType);
+
         }
 
         // GET: DocumentTypes/Edit/5
@@ -83,9 +104,30 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(documentType).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("Index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(documentType);
+                }
                 return RedirectToAction("Index");
             }
+
             return View(documentType);
         }
 
@@ -119,16 +161,16 @@ namespace WebTaxes.Controllers
             catch (Exception ex)
             {
 
-                if (ex.InnerException != null && ex.InnerException.InnerException != null && 
+                if (ex.InnerException != null && ex.InnerException.InnerException != null &&
                     ex.InnerException.InnerException.Message.Contains("REFERENCE"))
                 {
                     ModelState.AddModelError(string.Empty, "The record can't be delete because has related record.");
 
-                   
+
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty,ex.Message);
+                    ModelState.AddModelError(string.Empty, ex.Message);
                 }
 
                 return View(documentType);

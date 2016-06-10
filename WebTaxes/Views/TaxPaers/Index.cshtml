@@ -7,7 +7,7 @@
 <h2>Tax Paers</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { }, new { @class="btn btn-success"})
 </p>
 <table class="table">
     <tr>
@@ -38,6 +38,8 @@
         <th>
             @Html.DisplayNameFor(model => model.Document)
         </th>
+        <th></th>
+        <th></th>
         <th></th>
     </tr>
 
@@ -71,9 +73,16 @@
             @Html.DisplayFor(modelItem => item.Document)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TaxPaerId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TaxPaerId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TaxPaerId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.TaxPaerId }, new { @class="btn btn-info"})
+            
+            
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.TaxPaerId }, new { @class = "btn btn-primary" })
+           
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id = item.TaxPaerId }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }

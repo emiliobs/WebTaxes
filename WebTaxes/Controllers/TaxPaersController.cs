@@ -55,7 +55,35 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.TaxPaers.Add(taxPaer);
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)               {
+
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ther are a record with the same description.");
+                        
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                       
+                    }
+
+                    ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
+                    ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+                    return View(taxPaer);
+                }
+
+                ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
                 return RedirectToAction("Index");
             }
 
@@ -93,13 +121,40 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(taxPaer).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                       && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ther are a record with the same description.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+                    ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
+                    ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+                    return View(taxPaer);
+
+                }
+
+                ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
                 return RedirectToAction("Index");
+
             }
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
             ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
             return View(taxPaer);
+
         }
 
         // GET: TaxPaers/Delete/5

@@ -7,7 +7,7 @@
 <h2>Property Types</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create",new { }, new { @class="btn btn-primary"})
+    @Html.ActionLink("Create New", "Create",new { }, new { @class="btn btn-success"})
 </p>
 <table class="table">
     <tr>
@@ -30,7 +30,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PropertyTypeId }, new { @class = "btn btn-info" }) 
-            @Html.ActionLink("Details", "Details", new { id=item.PropertyTypeId }, new { @class = "btn btn-warning" }) 
+            @Html.ActionLink("Details", "Details", new { id=item.PropertyTypeId }, new { @class = "btn btn-primary" }) 
             @Html.ActionLink("Delete", "Delete", new { id=item.PropertyTypeId }, new { @class = "btn btn-danger" })
         </td>
     </tr>

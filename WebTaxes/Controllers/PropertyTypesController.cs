@@ -74,11 +74,11 @@ namespace WebTaxes.Controllers
 
                     return View(propertyType);
 
-                }              
-
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
 
+            return View(propertyType);
 
         }
 

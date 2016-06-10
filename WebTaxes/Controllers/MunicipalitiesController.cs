@@ -55,15 +55,39 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Municipalities.Add(municipality);
+             
 
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
 
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                       && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", municipality.DepartmentId);
+                    return View(municipality);
+                }
+
+                ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", municipality.DepartmentId);
                 return RedirectToAction("Index");
+
             }
 
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", municipality.DepartmentId);
-
             return View(municipality);
+
         }
 
         // GET: Municipalities/Edit/5
@@ -92,9 +116,34 @@ namespace WebTaxes.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(municipality).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                       && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same description.");
+
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", municipality.DepartmentId);
+                    return View(municipality);
+                }
+
+                ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", municipality.DepartmentId);
                 return RedirectToAction("Index");
             }
+
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", municipality.DepartmentId);
             return View(municipality);
         }
