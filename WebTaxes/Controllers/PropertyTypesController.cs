@@ -10,6 +10,7 @@ using WebTaxes.Models;
 
 namespace WebTaxes.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PropertyTypesController : Controller
     {
         private WebTaxesContext db = new WebTaxesContext();

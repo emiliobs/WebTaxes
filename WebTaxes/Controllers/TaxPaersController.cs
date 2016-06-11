@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using WebTaxes.Helpers;
 using WebTaxes.Models;
 
 namespace WebTaxes.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TaxPaersController : Controller
     {
         private WebTaxesContext db = new WebTaxesContext();
@@ -60,6 +62,8 @@ namespace WebTaxes.Controllers
                 try
                 {
                     db.SaveChanges();
+
+                    Utilities.CeateUserASP(taxPaer.UserName, "TaxPaer");
                 }
                 catch (Exception ex)               {
 

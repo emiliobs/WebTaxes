@@ -24,18 +24,38 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin Option.<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                           
-                            <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
-                            <li>@Html.ActionLink("Document Type", "Index", "DocumentTypes")</li>
-                            <li>@Html.ActionLink("Municipalities", "Index", "Municipalities")</li>
-                            <li>@Html.ActionLink("Property Types", "Index", "PropertyTypes")</li>
-                             <li>@Html.ActionLink("Tax Pages", "Index", "TaxPaers")</li>
-                        </ul>
-                    </li>         
-                  </ul>
+
+                    @if (this.User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin Option.<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+
+                                <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
+                                <li>@Html.ActionLink("Document Type", "Index", "DocumentTypes")</li>
+                                <li>@Html.ActionLink("Municipalities", "Index", "Municipalities")</li>
+                                <li>@Html.ActionLink("Property Types", "Index", "PropertyTypes")</li>
+                                <li>@Html.ActionLink("Tax Pages", "Index", "TaxPaers")</li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (this.User.IsInRole("TaxPaer"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tax Paer Option.<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+
+                                <li>@Html.ActionLink("My Settings", "Index", "MySettings")</li>
+                                <li>@Html.ActionLink("My Taxes", "Index", "MyTaxes")</li>
+                                <li>@Html.ActionLink("MyTicket", "Index", "MyTickets")</li>
+                                @*<li>@Html.ActionLink("Property Types", "Index", "PropertyTypes")</li>
+                                <li>@Html.ActionLink("Tax Pages", "Index", "TaxPaers")</li>*@
+                            </ul>
+                        </li>
+                    }
+
+                </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
