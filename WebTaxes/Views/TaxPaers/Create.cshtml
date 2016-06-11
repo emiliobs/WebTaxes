@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>TaxPaer</h4>
         <hr />
@@ -90,7 +90,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-success" />
-                @Html.ActionLink("Back to List", "Index", new { }, new { @class="btn btn-default"})
+                @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
@@ -98,6 +98,34 @@
 
 
 
-@section Scripts {
+@section Scripts
+ {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#DepartmentId").change(function () {
+                $("#MunicipalityId").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetMunicipalities")',
+                    datatype: 'json',
+                    data: { departmentId: $("#DepartmentId").val() },
+                    success: function (municipalities) {
+                        $.each(municipalities, function (i, municipality) {
+                            $("#MunicipalityId").append('<option value="' + municipality.MunicipalityId + '">' + municipality.Name + ' </option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve municipalities: ' + ex);
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
+
 }

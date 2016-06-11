@@ -41,7 +41,8 @@ namespace WebTaxes.Controllers
         {
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description");
-            ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name");
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId ==  db.Departments.FirstOrDefault().DepartmentId).
+                                                    OrderBy(m=>m.Name), "MunicipalityId", "Name");
             return View();
         }
 
@@ -77,19 +78,22 @@ namespace WebTaxes.Controllers
 
                     ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
                     ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-                    ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
                     return View(taxPaer);
                 }
 
                 ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
                 ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-                ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
                 return RedirectToAction("Index");
             }
 
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-            ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m=>m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m=>m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
             return View(taxPaer);
         }
 
@@ -107,7 +111,8 @@ namespace WebTaxes.Controllers
             }
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-            ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
             return View(taxPaer);
         }
 
@@ -139,20 +144,23 @@ namespace WebTaxes.Controllers
                     }
                     ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
                     ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-                    ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
                     return View(taxPaer);
 
                 }
 
                 ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
                 ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-                ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                     OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
                 return RedirectToAction("Index");
 
             }
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-            ViewBag.MunicipalityId = new SelectList(db.Municipalities, "MunicipalityId", "Name", taxPaer.MunicipalityId);
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
             return View(taxPaer);
 
         }
@@ -181,6 +189,14 @@ namespace WebTaxes.Controllers
             db.TaxPaers.Remove(taxPaer);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public JsonResult GetMunicipalities(int departmentId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var municipalities = db.Municipalities.
+                Where(m => m.DepartmentId == departmentId).OrderBy(m =>m.Name);
+            return Json(municipalities);
         }
 
         protected override void Dispose(bool disposing)
