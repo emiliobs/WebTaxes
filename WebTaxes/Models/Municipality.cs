@@ -15,6 +15,7 @@ namespace WebTaxes.Models
         [Index("Municipality_Name_index",IsUnique = true)]
         [StringLength(30,ErrorMessage ="The field {0} can contain maximun {1} and minimum {2} characters.", MinimumLength =3)]
         [Display(Name="Municipality")]
+        
         public String Name { get; set; }
 
         //relacion varios:

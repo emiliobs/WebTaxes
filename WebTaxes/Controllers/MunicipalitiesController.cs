@@ -29,7 +29,9 @@ namespace WebTaxes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Municipality municipality = db.Municipalities.Find(id);
+
             if (municipality == null)
             {
                 return HttpNotFound();

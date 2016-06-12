@@ -12,10 +12,11 @@ namespace WebTaxes.Models
         [Required(ErrorMessage ="The field {0} is required.")]
         [Index("Department_Name_Index", IsUnique =true)]
         [StringLength(30, ErrorMessage ="The field {0} can contain maximum {1} and minimum {2} characters.", MinimumLength =3)]
-        [Display(Name = "Department")]
+        [Display(Name = "Department Name")]
         public string Name { get; set; }
 
         //Relacion uno:
+      
         public virtual ICollection<Municipality> Municipalities { get; set; }
         public virtual ICollection<TaxPaer> TaxPaer { get; set; }
     }

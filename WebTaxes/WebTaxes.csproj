@@ -221,6 +221,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\DepartmentView.cs" />
     <Compile Include="Models\DocumentType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -329,6 +330,8 @@
     <Content Include="Views\TaxPaers\Details.cshtml" />
     <Content Include="Views\TaxPaers\Edit.cshtml" />
     <Content Include="Views\TaxPaers\Index.cshtml" />
+    <Content Include="Views\Departments\AddMunicipality.cshtml" />
+    <Content Include="Views\Departments\EditMunicipality.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -15,6 +15,151 @@ namespace WebTaxes.Controllers
     {
         private WebTaxesContext db = new WebTaxesContext();
 
+        [HttpPost]
+        public ActionResult EditMunicipality(Municipality view)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(view).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                       && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same Name.");
+
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(view);
+                }
+
+                return RedirectToAction($"Details/{view.DepartmentId}");
+            }
+
+            return View(view);
+
+           
+        }
+
+        [HttpGet]
+        public ActionResult EditMunicipality(int? municipalityId, int? departmentId)
+        {
+            if (municipalityId == null && departmentId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var municipality = db.Municipalities.Find(municipalityId);
+
+            if (municipality == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(municipality);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteMunicipality(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var municipalty = db.Municipalities.Find(id);
+
+            if (municipalty == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.Municipalities.Remove(municipalty);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                ViewBag.Error = "ERROR: " + ex.Message;
+                
+            }
+
+            //Borre o no el record si estando en la misma vista por que nunca sale de la vista details:
+            return RedirectToAction($"Details/{municipalty.DepartmentId}");
+        }
+
+        [HttpPost]
+        public ActionResult AddMunicipality(Municipality view)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Municipalities.Add(view);
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty,"There are a record with the same Name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    return View(view);
+                }
+
+                return RedirectToAction($"Details/{view.DepartmentId}");
+
+            }
+
+            return View(view);
+        }
+        public ActionResult AddMunicipality(int? id)
+        {
+            if (id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var department = db.Departments.Find(id);
+
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+
+            var view = new Municipality
+            {
+                DepartmentId = department.DepartmentId,
+            };
+
+            return View(view);
+        }
+
         // GET: Departments
         public ActionResult Index()
         {
@@ -28,11 +173,25 @@ namespace WebTaxes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Department department = db.Departments.Find(id);
+
             if (department == null)
             {
                 return HttpNotFound();
             }
+
+
+            
+
+            //var view = new DepartmentView
+                //{
+                //    DepartmentId = department.DepartmentId,
+                //    MunicipalityList = department.OrderBy(m=>m.Name).Municipalities.ToList(),
+                //    Name = department.Name,
+                //};
+
+            //return View(view);
             return View(department);
         }
 
