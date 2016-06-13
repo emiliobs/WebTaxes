@@ -11,11 +11,99 @@ using WebTaxes.Models;
 
 namespace WebTaxes.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class TaxPaersController : Controller
     {
         private WebTaxesContext db = new WebTaxesContext();
 
+        //Todo: here going:
+        [HttpGet]
+        [Authorize(Roles = "TaxPaer")]
+        public ActionResult MySettings()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+       
+        public ActionResult AddProperty(Property view)
+        {
+            if (true)
+            {
+                db.Properties.Add(view);
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    //ToDO: catch errors to improve the message
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null
+                        && ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ther are a record with the same description.");
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+
+                    }
+
+                    ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d => d.Name), "DepartmentId", "Name", view.DepartmentId);
+
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                             OrderBy(m => m.Name), "MunicipalityId", "Name", view.DepartmentId);
+                    ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description),
+                                                            "PropertyTypeId", "Description", view.PropertyTypeId);
+
+                    return View(view);
+
+                }
+
+                return RedirectToAction($"Details/{view.TaxPaerId}");
+            }
+
+            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d=>d.Name), "DepartmentId", "Name", view.DepartmentId);
+
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                     OrderBy(m => m.Name), "MunicipalityId", "Name", view.DepartmentId);
+            ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description),
+                                                    "PropertyTypeId", "Description", view.PropertyTypeId);
+
+            return View(view);
+
+        }       
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddProperty(int? id)
+        {
+
+            if (id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            
+
+            var view = new Property
+            {
+                TaxPaerId = id.Value,//es valuess por que el valor del id es opcional:
+            };
+
+            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.
+                                                   Where(m=>m.DepartmentId == db.Departments.FirstOrDefault().
+                                                   DepartmentId).OrderBy(m=>m.Name), "MunicipalityId", "Name");
+            ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description), "PropertyTypeId", "Description");
+
+            return View(view);
+        }
+
+        [Authorize(Roles = "Admin")]
         // GET: TaxPaers
         public ActionResult Index()
         {
@@ -38,6 +126,7 @@ namespace WebTaxes.Controllers
             return View(taxPaer);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: TaxPaers/Create
         public ActionResult Create()
         {
@@ -101,6 +190,7 @@ namespace WebTaxes.Controllers
             return View(taxPaer);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: TaxPaers/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -169,6 +259,7 @@ namespace WebTaxes.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: TaxPaers/Delete/5
         public ActionResult Delete(int? id)
         {

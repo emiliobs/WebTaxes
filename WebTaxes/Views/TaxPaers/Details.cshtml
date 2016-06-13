@@ -4,87 +4,158 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>TaxPaer</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Department.Name)
-        </dt>
+<div class="container">
+    <div class="col-md-5">
+        <h2>Details</h2>
+     
+        <div>           
+           
+                <h4>TaxPaer</h4>
+           <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Department.Name)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Department.Name)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Department.Name)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DocumentType.Description)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DocumentType.Description)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.DocumentType.Description)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.DocumentType.Description)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Municipality.Name)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Municipality.Name)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Municipality.Name)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Municipality.Name)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirsName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FirsName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirsName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.FirsName)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.lastName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.lastName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.lastName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.lastName)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Document)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Document)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Document)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Document)
+                </dd>
 
-    </dl>
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.TaxPaerId }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Add Property", "AddProperty", new { id = Model.TaxPaerId }, new { @class = "btn btn-warning" })
+            @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-default" })
+        </p>
+
+    </div>
+    <div class="col-md-7">
+        <h2>Property</h2>   
+        <br />
+        <hr />            
+      
+        @if (Model.Properties.Count == 0)
+        {
+            <br /><br />
+            <h2>No properties added yet.</h2>
+         
+        }
+        else
+        {
+         <table class="table">
+                <tr>
+                    <th>
+                        Phone
+                       
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        Stratum
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                    </th>
+                   
+                </tr>
+
+                @foreach (var item in Model.Properties)
+                {
+                       <tr>
+                        <td>
+                            @Html.DisplayFor(p=>item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => item.Stratum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => item.Area)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "EditProperty", new
+                           {
+                               municipalityId = item.PropertyId,
+                               departmentId = item.TaxPaerId
+                           }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Delete", "DeleteProperty", new { id = item.PropertyId },
+                                                 new { @class = "btn btn-danger", onClick = "return confirm('Are you sure to delete this record?')" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.TaxPaerId }, new { @class="btn btn-info"}) 
-    @Html.ActionLink("Back to List", "Index", new { }, new { @class="btn btn-default"})
-</p>

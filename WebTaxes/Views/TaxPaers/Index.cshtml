@@ -38,7 +38,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Document)
         </th>
-        <th></th>
+        <th>
+            # Properties
+        </th>
         <th></th>
         <th></th>
     </tr>
@@ -71,6 +73,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Document)
+        </td>
+        <td>
+            @Html.DisplayFor(p => item.Properties.Count)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.TaxPaerId }, new { @class="btn btn-info"})
