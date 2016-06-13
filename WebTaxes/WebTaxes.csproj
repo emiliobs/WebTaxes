@@ -226,6 +226,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Municipality.cs" />
+    <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyType.cs" />
     <Compile Include="Models\TaxPaer.cs" />
     <Compile Include="Models\WebTaxesContext.cs" />

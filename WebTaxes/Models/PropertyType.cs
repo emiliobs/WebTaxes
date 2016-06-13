@@ -20,5 +20,8 @@ namespace WebTaxes.Models
 
         [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
+
+        //relacion uno:
+        public virtual ICollection<Property> Properties { get; set; }
     }
 }

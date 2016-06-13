@@ -19,5 +19,7 @@ namespace WebTaxes.Models
       
         public virtual ICollection<Municipality> Municipalities { get; set; }
         public virtual ICollection<TaxPaer> TaxPaer { get; set; }
+
+        public virtual ICollection<Property> Properties { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebTaxes.Models
@@ -54,6 +56,9 @@ namespace WebTaxes.Models
         public virtual Department Department { get; set; }
         public virtual Municipality Municipality { get; set; }
         public virtual DocumentType DocumentType { get; set; }
+
+        //lado uno de la relación:
+        public virtual ICollection<Property> Properties { get; set; }
 
 
     }

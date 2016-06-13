@@ -35,5 +35,6 @@ namespace WebTaxes.Models
         public DbSet<DocumentType> DocumentTypes { get; set; }
 
         public System.Data.Entity.DbSet<WebTaxes.Models.TaxPaer> TaxPaers { get; set; }
+        public DbSet<Property> Properties { get; set; }
     }
 }
