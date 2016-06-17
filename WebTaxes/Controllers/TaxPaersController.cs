@@ -11,19 +11,107 @@ using WebTaxes.Models;
 
 namespace WebTaxes.Controllers
 {
-    
+
     public class TaxPaersController : Controller
     {
         private WebTaxesContext db = new WebTaxesContext();
 
-        //Todo: here going:
+       
+        [HttpGet]
+        [Authorize(Roles = "TaxPaer")]
+        public ActionResult MyProperties()
+        {
+            //lo busco
+            var view = db.TaxPaers.Where(tp=>tp.UserName == this.User.Identity.Name).FirstOrDefault();
+
+
+            if (view  != null)
+            {
+                return View(view.Properties.ToList());
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult MySettings(TaxPaer view)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(view).State = EntityState.Modified;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null &&
+                        ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same Name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", view.DepartmentId);
+                    ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", view.DocumentTypeId);
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                                            OrderBy(m => m.Name), "MunicipalityId", "Name", view.MunicipalityId);
+
+
+
+                    return View(view);
+                }
+
+                ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", view.DepartmentId);
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", view.DocumentTypeId);
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                                        OrderBy(m => m.Name), "MunicipalityId", "Name", view.MunicipalityId);
+
+
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", view.DepartmentId);
+            ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", view.DocumentTypeId);
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", view.MunicipalityId);
+
+
+
+            return View(view);
+        }
         [HttpGet]
         [Authorize(Roles = "TaxPaer")]
         public ActionResult MySettings()
         {
-            return View();
+            //Utilizo el find cuando se el id, utilizo el Where cuando lo tengo que buscar en la bd y tiene que existe
+            //por que antes el hay un registro para utilizar la app:
+            var view = db.TaxPaers.Where(tp => tp.UserName == this.User.Identity.Name).FirstOrDefault();
+
+            //Si  existe:
+            if (view != null)
+            {
+
+                ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", view.DepartmentId);
+                ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", view.DocumentTypeId);
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                                        OrderBy(m => m.Name), "MunicipalityId", "Name", view.MunicipalityId);
+
+
+                return View(view);
+            }
+
+            //Si no  existe: lo envio al index del home:
+
+            return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult DeleteProperty(int? id)
         {
@@ -56,6 +144,7 @@ namespace WebTaxes.Controllers
             return RedirectToAction($"Details/{view.TaxPaerId}");
         }
 
+
         [HttpPost]
         public ActionResult EditProperty(Property view)
         {
@@ -70,10 +159,10 @@ namespace WebTaxes.Controllers
                 catch (Exception ex)
                 {
 
-                    if (ex.InnerException != null && ex.InnerException.InnerException != null && 
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null &&
                         ex.InnerException.InnerException.Message.Contains("index"))
                     {
-                        ModelState.AddModelError(string.Empty,"There are a record with the same Name.");
+                        ModelState.AddModelError(string.Empty, "There are a record with the same Name.");
                     }
                     else
                     {
@@ -109,8 +198,10 @@ namespace WebTaxes.Controllers
 
             return View(view);
 
-            
+
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult EditProperty(int? propertyId, int? taxPaerId)
         {
@@ -139,7 +230,7 @@ namespace WebTaxes.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-       
+
         public ActionResult AddProperty(Property view)
         {
             if (true)
@@ -179,7 +270,7 @@ namespace WebTaxes.Controllers
                 return RedirectToAction($"Details/{view.TaxPaerId}");
             }
 
-            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d=>d.Name), "DepartmentId", "Name", view.DepartmentId);
+            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d => d.Name), "DepartmentId", "Name", view.DepartmentId);
 
             ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
                                      OrderBy(m => m.Name), "MunicipalityId", "Name", view.DepartmentId);
@@ -188,19 +279,19 @@ namespace WebTaxes.Controllers
 
             return View(view);
 
-        }       
+        }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult AddProperty(int? id)
         {
 
-            if (id==null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            
+
 
             var view = new Property
             {
@@ -209,8 +300,8 @@ namespace WebTaxes.Controllers
 
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
             ViewBag.MunicipalityId = new SelectList(db.Municipalities.
-                                                   Where(m=>m.DepartmentId == db.Departments.FirstOrDefault().
-                                                   DepartmentId).OrderBy(m=>m.Name), "MunicipalityId", "Name");
+                                                   Where(m => m.DepartmentId == db.Departments.FirstOrDefault().
+                                                   DepartmentId).OrderBy(m => m.Name), "MunicipalityId", "Name");
             ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description), "PropertyTypeId", "Description");
 
             return View(view);
@@ -245,8 +336,8 @@ namespace WebTaxes.Controllers
         {
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description");
-            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId ==  db.Departments.FirstOrDefault().DepartmentId).
-                                                    OrderBy(m=>m.Name), "MunicipalityId", "Name");
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == db.Departments.FirstOrDefault().DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name");
             return View();
         }
 
@@ -267,19 +358,20 @@ namespace WebTaxes.Controllers
 
                     Utilities.CeateUserASP(taxPaer.UserName, "TaxPaer");
                 }
-                catch (Exception ex)               {
+                catch (Exception ex)
+                {
 
 
                     if (ex.InnerException != null && ex.InnerException.InnerException != null
                         && ex.InnerException.InnerException.Message.Contains("index"))
                     {
                         ModelState.AddModelError(string.Empty, "Ther are a record with the same description.");
-                        
+
                     }
                     else
                     {
                         ModelState.AddModelError(string.Empty, ex.Message);
-                       
+
                     }
 
                     ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
@@ -298,8 +390,8 @@ namespace WebTaxes.Controllers
 
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", taxPaer.DepartmentId);
             ViewBag.DocumentTypeId = new SelectList(db.DocumentTypes, "DocumentTypeId", "Description", taxPaer.DocumentTypeId);
-            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m=>m.DepartmentId == taxPaer.DepartmentId).
-                                                    OrderBy(m=>m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == taxPaer.DepartmentId).
+                                                    OrderBy(m => m.Name), "MunicipalityId", "Name", taxPaer.MunicipalityId);
             return View(taxPaer);
         }
 
@@ -403,7 +495,7 @@ namespace WebTaxes.Controllers
         {
             db.Configuration.ProxyCreationEnabled = false;
             var municipalities = db.Municipalities.
-                Where(m => m.DepartmentId == departmentId).OrderBy(m =>m.Name);
+                Where(m => m.DepartmentId == departmentId).OrderBy(m => m.Name);
             return Json(municipalities);
         }
 

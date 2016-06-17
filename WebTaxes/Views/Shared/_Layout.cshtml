@@ -40,15 +40,15 @@
                         </li>
                     }
 
-                    @if (this.User.IsInRole("TaxPaer"))
+                    @if (this.User.IsInRole("TaxPaer") || this.User.IsInRole("Admin"))
                     {
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tax Paer Option.<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-
-                                <li>@Html.ActionLink("My Settings", "MySettings", "TaxPaer")</li>
+                                <li>@Html.ActionLink("My Properties", "MyProperties", "TaxPaers")</li>
+                                <li>@Html.ActionLink("My Settings", "MySettings", "TaxPaers")</li>
                                 <li>@Html.ActionLink("My Taxes", "Index", "MyTaxes")</li>
-                                <li>@Html.ActionLink("MyTicket", "Index", "MyTickets")</li>
+                                <li>@Html.ActionLink("My Tickets", "Index", "MyTickets")</li>
                                 @*<li>@Html.ActionLink("Property Types", "Index", "PropertyTypes")</li>
                                 <li>@Html.ActionLink("Tax Pages", "Index", "TaxPaers")</li>*@
                             </ul>

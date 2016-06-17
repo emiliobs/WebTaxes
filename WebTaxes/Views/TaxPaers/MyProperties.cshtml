@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WebTaxes.Models.Property>
+
+@{
+    ViewBag.Title = "My Properties";
+}
+
+<h2>My Properties</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Municipality.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PropertyType.Description)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.TaxPaer.FirsName)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stratum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Municipality.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PropertyType.Description)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.TaxPaer.FirsName)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Stratum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area)
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PropertyId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PropertyId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PropertyId })
+        </td>*@
+    </tr>
+}  
+  
+</table>
+<div>
+    @Html.ActionLink("Back to Index", "Index", "Home", new { }, new { @class = "btn btn-default" })
+</div>

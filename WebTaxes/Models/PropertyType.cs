@@ -16,6 +16,7 @@ namespace WebTaxes.Models
         [Required(ErrorMessage = "The field description is required.")]
         [Index("PropertyType_Description_Index", IsUnique =true)]
         [StringLength(30,ErrorMessage ="The field {0} can contain maximum {1} and minimum {2} characters",MinimumLength =1)]
+        [Display(Name = "Property Type")]
         public string Description { get; set; }
 
         [DataType(DataType.MultilineText)]

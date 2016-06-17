@@ -335,6 +335,8 @@
     <Content Include="Views\Departments\EditMunicipality.cshtml" />
     <Content Include="Views\TaxPaers\AddProperty.cshtml" />
     <Content Include="Views\TaxPaers\EditProperty.cshtml" />
+    <Content Include="Views\TaxPaers\MySettings.cshtml" />
+    <Content Include="Views\TaxPaers\MyProperties.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
