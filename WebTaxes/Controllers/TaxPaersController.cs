@@ -24,6 +24,119 @@ namespace WebTaxes.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult DeleteProperty(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var view = db.Properties.Find(id);
+
+            if (view == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.Properties.Remove(view);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                ModelState.AddModelError(string.Empty, ex.Message);
+                ViewBag.Error = "ERROR: " + ex.Message;
+            }
+
+
+            return RedirectToAction($"Details/{view.TaxPaerId}");
+        }
+
+        [HttpPost]
+        public ActionResult EditProperty(Property view)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(view).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException != null && ex.InnerException.InnerException != null && 
+                        ex.InnerException.InnerException.Message.Contains("index"))
+                    {
+                        ModelState.AddModelError(string.Empty,"There are a record with the same Name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
+                    ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d => d.Name), "DepartmentId", "Name", view.DepartmentId);
+
+                    ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                             OrderBy(m => m.Name), "MunicipalityId", "Name", view.DepartmentId);
+                    ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description),
+                                                            "PropertyTypeId", "Description", view.PropertyTypeId);
+
+                    return View(view);
+                }
+
+                ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d => d.Name), "DepartmentId", "Name", view.DepartmentId);
+
+                ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                         OrderBy(m => m.Name), "MunicipalityId", "Name", view.DepartmentId);
+                ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description),
+                                                        "PropertyTypeId", "Description", view.PropertyTypeId);
+
+                return RedirectToAction($"Details/{view.TaxPaerId}");
+            }
+
+            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d => d.Name), "DepartmentId", "Name", view.DepartmentId);
+
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == view.DepartmentId).
+                                     OrderBy(m => m.Name), "MunicipalityId", "Name", view.DepartmentId);
+            ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description),
+                                                    "PropertyTypeId", "Description", view.PropertyTypeId);
+
+            return View(view);
+
+            
+        }
+        [HttpGet]
+        public ActionResult EditProperty(int? propertyId, int? taxPaerId)
+        {
+            if (propertyId == null && taxPaerId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var property = db.Properties.Find(propertyId);
+
+            if (property == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d => d.Name), "DepartmentId", "Name", property.DepartmentId);
+
+            ViewBag.MunicipalityId = new SelectList(db.Municipalities.Where(m => m.DepartmentId == property.DepartmentId).
+                                     OrderBy(m => m.Name), "MunicipalityId", "Name", property.DepartmentId);
+            ViewBag.PropertyTypeId = new SelectList(db.PropertyTypes.OrderBy(pt => pt.Description),
+                                                    "PropertyTypeId", "Description", property.PropertyTypeId);
+
+            return View(property);
+
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
        

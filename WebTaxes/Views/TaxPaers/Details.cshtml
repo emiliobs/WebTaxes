@@ -6,13 +6,13 @@
 
 
 <div class="container">
-    <div class="col-md-5">
+    <div class="col-md-4">
         <h2>Details</h2>
-     
-        <div>           
-           
-                <h4>TaxPaer</h4>
-           <hr />
+
+        <div>
+
+            <h4>TaxPaer</h4>
+            <hr />
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Department.Name)
@@ -95,24 +95,33 @@
         </p>
 
     </div>
-    <div class="col-md-7">
-        <h2>Property</h2>   
+    <div class="col-md-8">
+        <h2>Property</h2>
         <br />
-        <hr />            
-      
+        <br />
+
         @if (Model.Properties.Count == 0)
         {
             <br /><br />
             <h2>No properties added yet.</h2>
-         
+
         }
         else
         {
-         <table class="table">
+            <table class="table">
                 <tr>
                     <th>
+                        Department
+
+                    </th>
+                    <th>
+                        Municipality
+                    </th>
+                    <th>
+                        Property Type
+                    </th>
+                    <th>
                         Phone
-                       
                     </th>
                     <th>
                         Address
@@ -125,14 +134,23 @@
                     </th>
                     <th>
                     </th>
-                   
+
                 </tr>
 
                 @foreach (var item in Model.Properties)
                 {
-                       <tr>
+                    <tr>
                         <td>
-                            @Html.DisplayFor(p=>item.Phone)
+                            @Html.DisplayFor(p => item.Department.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => item.Municipality.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => item.PropertyType.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => item.Phone)
                         </td>
                         <td>
                             @Html.DisplayFor(p => item.Address)
@@ -145,10 +163,13 @@
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "EditProperty", new
-                           {
-                               municipalityId = item.PropertyId,
-                               departmentId = item.TaxPaerId
-                           }, new { @class = "btn btn-info" })
+                       {
+                           propertyId = item.PropertyId,
+                           taxPaerId = item.TaxPaerId
+                       }, new { @class = "btn btn-info" })
+
+                        </td>
+                        <td>
                             @Html.ActionLink("Delete", "DeleteProperty", new { id = item.PropertyId },
                                                  new { @class = "btn btn-danger", onClick = "return confirm('Are you sure to delete this record?')" })
                         </td>
