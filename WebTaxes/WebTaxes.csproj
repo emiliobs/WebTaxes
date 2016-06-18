@@ -213,6 +213,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MunicipalitiesController.cs" />
     <Compile Include="Controllers\PropertyTypesController.cs" />
+    <Compile Include="Controllers\TaxesController.cs" />
     <Compile Include="Controllers\TaxPaersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -228,6 +229,7 @@
     <Compile Include="Models\Municipality.cs" />
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyType.cs" />
+    <Compile Include="Models\Tax.cs" />
     <Compile Include="Models\TaxPaer.cs" />
     <Compile Include="Models\WebTaxesContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -337,6 +339,11 @@
     <Content Include="Views\TaxPaers\EditProperty.cshtml" />
     <Content Include="Views\TaxPaers\MySettings.cshtml" />
     <Content Include="Views\TaxPaers\MyProperties.cshtml" />
+    <Content Include="Views\Taxes\Create.cshtml" />
+    <Content Include="Views\Taxes\Delete.cshtml" />
+    <Content Include="Views\Taxes\Details.cshtml" />
+    <Content Include="Views\Taxes\Edit.cshtml" />
+    <Content Include="Views\Taxes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

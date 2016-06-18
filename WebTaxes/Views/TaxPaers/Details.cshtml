@@ -6,7 +6,7 @@
 
 
 <div class="container">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h2>Details</h2>
 
         <div>
@@ -88,15 +88,21 @@
 
             </dl>
         </div>
+       <p>
+           @Html.ActionLink("Edit", "Edit", new { id = Model.TaxPaerId }, new { @class = "btn btn-info" })
+       </p>
+         <p>
+             @Html.ActionLink("Add Property", "AddProperty", new { id = Model.TaxPaerId }, new { @class = "btn btn-warning" })
+             
+         </p> 
         <p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.TaxPaerId }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Add Property", "AddProperty", new { id = Model.TaxPaerId }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-default" })
+         @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-default" })
         </p>
+    
 
     </div>
-    <div class="col-md-8">
-        <h2>Property</h2>
+    <div class="col-md-9">
+        <h2>Properties</h2>
         <br />
         <br />
 
@@ -111,30 +117,43 @@
             <table class="table">
                 <tr>
                     <th>
-                        Department
-
+                        @*Department*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Department.Name)
                     </th>
                     <th>
-                        Municipality
+                        @*Municipality*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Municipality.Name)
                     </th>
                     <th>
-                        Property Type
+                        @*Property Type*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().PropertyType.Description)
                     </th>
                     <th>
-                        Phone
+                        @*Phone*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Phone)
                     </th>
                     <th>
-                        Address
+                        @*Address*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Address)
                     </th>
                     <th>
-                        Stratum
+                        @*Stratum*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Stratum)
                     </th>
                     <th>
-                        Area
+                        @*Area*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Area)
+                    </th>
+                    <th>
+                        @*Area*@
+                        @Html.DisplayNameFor(model => model.Properties.FirstOrDefault().Value)
                     </th>
                     <th>
                     </th>
-
+                    <th>
+                    </th>
+                    <th>
+                    </th>
                 </tr>
 
                 @foreach (var item in Model.Properties)
@@ -155,11 +174,14 @@
                         <td>
                             @Html.DisplayFor(p => item.Address)
                         </td>
-                        <td>
+                        <td align="right">
                             @Html.DisplayFor(p => item.Stratum)
                         </td>
-                        <td>
+                        <td align="right">
                             @Html.DisplayFor(p => item.Area)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(p => item.Value)
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "EditProperty", new
@@ -170,8 +192,14 @@
 
                         </td>
                         <td>
+                            @Html.ActionLink("Taxes", "ShowTaxes", new
+                       {
+                           propertyId = item.PropertyId}, new { @class = "btn btn-primary" })
+                        </td>
+                        <td>
                             @Html.ActionLink("Delete", "DeleteProperty", new { id = item.PropertyId },
-                                                 new { @class = "btn btn-danger", onClick = "return confirm('Are you sure to delete this record?')" })
+                                                 new { @class = "btn btn-danger",
+                                                       onClick = "return confirm('Are you sure to delete this record?')" })
                         </td>
                     </tr>
                 }

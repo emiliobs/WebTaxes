@@ -41,6 +41,11 @@ namespace WebTaxes.Models
         [Range(1, 99999999, ErrorMessage = "The field {0} must be contain values between {1} and {2}")]
         public float Area { get; set; }
 
+        [Required(ErrorMessage = "You must enter a {0}")]
+        [Range(1, 99999999999999, ErrorMessage = "The field {0} must be contain values between {1} and {2}")]
+         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal Value { get; set; }
+
         //relacionnes: lado varios:
         public virtual TaxPaer TaxPaer { get; set; }
 
