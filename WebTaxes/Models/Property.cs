@@ -55,5 +55,7 @@ namespace WebTaxes.Models
 
         public virtual PropertyType PropertyType { get; set; }
 
+        public virtual ICollection<TaxProperty> TaxProperties { get; set; }
+
     }
 }

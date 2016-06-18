@@ -231,6 +231,8 @@
     <Compile Include="Models\PropertyType.cs" />
     <Compile Include="Models\Tax.cs" />
     <Compile Include="Models\TaxPaer.cs" />
+    <Compile Include="Models\TaxPaerWithTotal.cs" />
+    <Compile Include="Models\TaxProperty.cs" />
     <Compile Include="Models\WebTaxesContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -344,6 +346,9 @@
     <Content Include="Views\Taxes\Details.cshtml" />
     <Content Include="Views\Taxes\Edit.cshtml" />
     <Content Include="Views\Taxes\Index.cshtml" />
+    <Content Include="Views\Taxes\Success.cshtml" />
+    <Content Include="Views\Taxes\Fail.cshtml" />
+    <Content Include="Views\TaxPaers\MyTaxes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

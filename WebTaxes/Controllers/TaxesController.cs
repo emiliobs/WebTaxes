@@ -10,9 +10,94 @@ using WebTaxes.Models;
 
 namespace WebTaxes.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TaxesController : Controller
     {
         private WebTaxesContext db = new WebTaxesContext();
+
+        
+       
+        public ActionResult GenerateTaxes()
+        {
+            int year = DateTime.Now.Year;
+            var properties = db.Properties.ToList();
+            //aqui tengo la lista de taxes en memoria:
+            var taxes = db.Taxes.ToList();
+
+            //desde aqui provoco que se reventar la aplicacion
+            int i = 0;
+
+            //aqui genero el proceso de trnassacion:
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var property in properties)
+                    {
+                        var taxProperty = db.TaxProperties.
+                            Where(tp => tp.PropertyId == property.PropertyId && tp.Year == year).
+                            FirstOrDefault();
+
+                        if (taxProperty == null)
+                        {
+                            var rate = taxes.Where(t => t.Stratum == property.Stratum).FirstOrDefault();
+
+                            if (rate != null)
+                            {
+                                taxProperty = new TaxProperty
+                                {
+                                    DateGenarated = DateTime.Now,
+                                    IsPay = false,
+                                    PropertyId = property.PropertyId,
+                                    Year = year,
+                                    Value = property.Value * (decimal)rate.Rate,
+                                };
+
+                                //Codigo de simulacion para reventar el programa:
+                                //i++;
+
+                                //if (i == 3)
+                                //{
+                                //    int a = 0;
+
+                                //    i /= a;
+                                //}
+
+                                db.TaxProperties.Add(taxProperty);
+                                db.SaveChanges();
+                            }
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //si falla:
+                    transaction.Rollback();
+                    return RedirectToAction("Fail","Taxes", ex.Message);
+                }
+
+                //si todo es bueno:
+                transaction.Commit();
+               
+            }//fin transacction
+            return RedirectToAction("Success");
+        }
+
+        public ActionResult Success()
+        {
+            
+
+            return View();
+        }
+
+        public ActionResult Fail(string message)
+        {
+
+            ViewBag.ERROR = message;
+
+            return View();
+        }
 
         // GET: Taxes
         public ActionResult Index()

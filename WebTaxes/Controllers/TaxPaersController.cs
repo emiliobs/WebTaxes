@@ -16,7 +16,41 @@ namespace WebTaxes.Controllers
     {
         private WebTaxesContext db = new WebTaxesContext();
 
-       
+        [Authorize(Roles = "TaxPaer")]
+        //Impuesto por pagar:
+        public ActionResult MyTaxes()
+        {
+            var taxPaer = db.TaxPaers.Where(tp => tp.UserName == this.User.Identity.Name).FirstOrDefault();
+
+            decimal total = 0;
+
+            //Aqui busca los impuesto por cada propiedad:
+            foreach (var property in taxPaer.Properties.ToList())
+            {
+                foreach (var taxProperty in property.TaxProperties.ToList())
+                {
+                    if (taxProperty.IsPay)
+                    {
+                        //lo elimino de la memoria no de la la bd:
+                        property.TaxProperties.Remove(taxProperty);
+                    }
+                    else
+                    {
+                        total += taxProperty.Value;
+                    }
+                }
+            }
+            //creo el objeto: y lo envio a la vista MyTaxes:
+            var view = new TaxPaerWithTotal
+            {
+                TaxPaer = taxPaer,
+                Total = total,
+            };
+
+            return View(view);
+        }
+
+
         [HttpGet]
         [Authorize(Roles = "TaxPaer")]
         public ActionResult MyProperties()
