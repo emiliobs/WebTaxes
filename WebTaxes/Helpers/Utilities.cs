@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using WebTaxes.Models;
 
 namespace WebTaxes.Helpers
@@ -30,12 +31,13 @@ namespace WebTaxes.Helpers
         public static void CheckSuperUser()
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContext));
-
+            var email = WebConfigurationManager.AppSettings["AdminUser"];
+            var password = WebConfigurationManager.AppSettings["AdminPassWord"];
             //Busco el susuario en la DB y pregunto si existe:
-            var userASP = userManager.FindByName("barrera_emilio@hotmail.com");
+            var userASP = userManager.FindByName(email);
             if (userASP == null)
             {
-                CeateUserASP("barrera_emilio@hotmail.com", "Admin");
+                CeateUserASP(email, "Admin", password);
                 return;
             }
 
@@ -44,6 +46,7 @@ namespace WebTaxes.Helpers
 
         }
 
+        //sin el parametro password
         //crea los usuarios en la tabla AspNetUserRoles
         //método generico(parametros)
         public static void CeateUserASP(string email, string roleName)
@@ -60,6 +63,26 @@ namespace WebTaxes.Helpers
             };
 
             userManager.Create(userASP,email);
+
+            //Add user to role:
+            userManager.AddToRole(userASP.Id, roleName);
+        }
+    
+        //con password
+        public static void CeateUserASP(string email, string roleName, string password)
+        {
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContext));
+
+            //pasos para crear el usuario
+            //creo el usuario con el role:
+            //create the ASP NET User:
+            var userASP = new ApplicationUser
+            {
+                Email = email,
+                UserName = email,
+            };
+
+            userManager.Create(userASP, password);
 
             //Add user to role:
             userManager.AddToRole(userASP.Id, roleName);
