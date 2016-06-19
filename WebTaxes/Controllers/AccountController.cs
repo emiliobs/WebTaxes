@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebTaxes.Models;
+using WebTaxes.Helpers;
 
 namespace WebTaxes.Controllers
 {
@@ -202,6 +203,15 @@ namespace WebTaxes.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await UserManager.FindByNameAsync(model.Email);
+
+                if (user != null)
+                {
+                    await Utilities.PasswordRecovery(model.Email);
+
+                    return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                }
+
                 return View(model);
             }
 
