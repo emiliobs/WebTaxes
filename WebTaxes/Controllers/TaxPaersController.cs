@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using WebTaxes.Helpers;
 using WebTaxes.Models;
+//
+//para hacer paginacion:
+using PagedList;
 
 namespace WebTaxes.Controllers
 {
@@ -343,10 +346,22 @@ namespace WebTaxes.Controllers
 
         [Authorize(Roles = "Admin")]
         // GET: TaxPaers
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var taxPaers = db.TaxPaers.Include(t => t.Department).Include(t => t.DocumentType).Include(t => t.Municipality);
-            return View(taxPaers.ToList());
+            //var taxPaers = db.TaxPaers.Include(t => t.Department).Include(t => t.DocumentType).Include(t => t.Municipality);
+            //return View(taxPaers.ToList());
+
+            //Páginacion:
+            //?? operador binario(si pagina = null llevele uno)
+            page = (page ?? 1);
+
+            var taxPaers = db.TaxPaers
+                .OrderBy(tp => tp.lastName)
+                .ThenBy(tp => tp.FirsName);
+
+            return View(taxPaers.ToPagedList((int)page,5));
+
+            
         }
 
         // GET: TaxPaers/Details/5
