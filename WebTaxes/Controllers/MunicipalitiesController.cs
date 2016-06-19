@@ -15,11 +15,20 @@ namespace WebTaxes.Controllers
     {
         private WebTaxesContext db = new WebTaxesContext();
 
-        // GET: Municipalities
+        //filter view:
+
+        // GET: MunicipalitiesView
         public ActionResult Index()
         {
             var municipalities = db.Municipalities.Include(m => m.Department);
-            return View(municipalities.OrderBy(m=>m.Name).ToList());
+
+            var view = new MunicipalitiesView
+            {
+                Municipalities = municipalities.ToList(),
+            };
+
+            return View(view);
+            
         }
 
         // GET: Municipalities/Details/5

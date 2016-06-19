@@ -234,6 +234,7 @@
     <Compile Include="Models\DocumentType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MunicipalitiesView.cs" />
     <Compile Include="Models\Municipality.cs" />
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyType.cs" />
