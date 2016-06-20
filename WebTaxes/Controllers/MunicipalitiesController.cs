@@ -15,6 +15,29 @@ namespace WebTaxes.Controllers
     {
         private WebTaxesContext db = new WebTaxesContext();
 
+        [HttpPost]
+        public ActionResult Index(MunicipalitiesView view)
+        {
+            var municipalities = db.Municipalities.
+                Include(m => m.Department).
+                OrderBy(m=>m.Department.Name).
+                ThenBy(m=>m.Name).ToList();
+            //si no es nullo ni vacio:
+            if (!string.IsNullOrEmpty(view.Department))
+            {
+                municipalities = municipalities.
+                                 Where(m => m.Department.Name.ToUpper().Contains(view.Department.ToUpper())).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(view.Municipality))
+            {
+                municipalities = municipalities.Where(m=>m.Name.ToUpper().Contains(view.Municipality.ToUpper())).ToList();
+            }
+
+            view.Municipalities = municipalities;
+
+            return View(view);
+        }
         //filter view:
 
         // GET: MunicipalitiesView

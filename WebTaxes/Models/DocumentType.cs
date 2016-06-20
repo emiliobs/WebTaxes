@@ -16,6 +16,8 @@ namespace WebTaxes.Models
         public string Description { get; set; }
 
         public virtual ICollection<TaxPaer> TaxPaer { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 
        

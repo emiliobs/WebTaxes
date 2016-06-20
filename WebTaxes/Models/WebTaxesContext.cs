@@ -15,7 +15,7 @@ namespace WebTaxes.Models
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
+
         public WebTaxesContext() : base("name=DefaultConnection")
         {
         }
@@ -24,6 +24,11 @@ namespace WebTaxes.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Entity<Employee>()
+                        .HasOptional(x => x.Boss)
+                        .WithMany(x => x.Employees)
+                        .HasForeignKey(x => x.BossId);
         }
 
         public DbSet<PropertyType> PropertyTypes { get; set; }
@@ -38,5 +43,7 @@ namespace WebTaxes.Models
         public DbSet<Property> Properties { get; set; }
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<TaxProperty> TaxProperties { get; set; }
+
+        public System.Data.Entity.DbSet<WebTaxes.Models.Employee> Employees { get; set; }
     }
 }

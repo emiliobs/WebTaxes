@@ -23,5 +23,7 @@ namespace WebTaxes.Models
         public virtual Department Department { get; set; }
         public virtual ICollection<TaxPaer> TaxPaer { get; set; }
         public virtual ICollection<Property> Properties { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }

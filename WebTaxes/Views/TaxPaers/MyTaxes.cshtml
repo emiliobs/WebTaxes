@@ -38,10 +38,10 @@
         <th>
             @Html.DisplayNameFor(model => model.TaxPaer.Properties.FirstOrDefault().Value)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => Model.Total)
-        </th>
-        <th></th>
+        </th>*@
+      
        
     </tr>
 
@@ -73,7 +73,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Area)
             </td>
-            <td>
+            <td align="right">
                 @Html.DisplayFor(modelItem => item.Value)
             </td>
             @*<td>
@@ -84,12 +84,12 @@
                     @Html.ActionLink("Details", "Details", new { id=item.PropertyId }) |
                     @Html.ActionLink("Delete", "Delete", new { id=item.PropertyId })
                 </td>*@
-            <td></td>
-            <td></td>
+          
+           
         </tr>
     }
     <tr>
-        <td colspan="8" style="color:red" align="right">
+        <td colspan="7" style="color:red" align="right">
             <strong> @Html.DisplayNameFor(modelItem => Model.Total):</strong>
         </td>
         <td align="right" style="color:red">
