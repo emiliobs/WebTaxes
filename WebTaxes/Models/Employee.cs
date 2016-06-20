@@ -58,7 +58,7 @@ namespace WebTaxes.Models
         public int? BossId { get; set; }
 
         [Display(Name = "Full Name")]
-        public string FullName { get { return ($"{this.FirsName}, {this.lastName}"); } }
+        public string FullName { get { return ($"{this.FirsName} {this.lastName}"); } }
 
         //lado varios de la relación:
         public virtual Department Department { get; set; }
